@@ -185,7 +185,7 @@ function sendMsg() {
 
         // 发送成功之后的回调
         inputSend.value = '';
-        showLog('（' + formatTime(data.t) + '）  自己： ', val);
+        showLog('（' + formatTime(data.t) + '）  自己： ', val, false, true);
         printWall.scrollTop = printWall.scrollHeight;
     });
 
@@ -215,6 +215,7 @@ function sendMsg() {
 function showMsg(data, isBefore) {
     var text = '';
     var from = data.fromPeerId;
+    var isSelf = false
     if (data.msg.type) {
         text = data.msg.text;
     } else {
@@ -222,9 +223,10 @@ function showMsg(data, isBefore) {
     }
     if (data.fromPeerId === clientId) {
         from = '自己';
+        isSelf = true;
     }
     if (String(text).replace(/^\s+/, '').replace(/\s+$/, '')) {
-        showLog('（' + formatTime(data.timestamp) + '）  ' + encodeHTML(from) + '： ', text, isBefore);
+        showLog('（' + formatTime(data.timestamp) + '）  ' + encodeHTML(from) + '： ', text, isBefore, isSelf);
     }
 }
 
@@ -266,23 +268,40 @@ function getLog(callback) {
 }
 
 // demo 中输出代码
-function showLog(msg, data, isBefore) {
+function showLog(msg, data, isBefore, isSelf) {
     if (data) {
-        // console.log(msg, data);
+        //console.log(msg, data);
         //msg = msg + '<span class="strong">' + encodeHTML(JSON.stringify(data)) + '</span>';
-        msg = msg + '<div class="col-md-2 col-sm-2 col-xs-3">' + 
-                    '  <a href="http://google.com">' +
-                    '    <img class="img-responsive" src="http://dzt1km7tv28ex.cloudfront.net/u/210832028860416000_35s_d.jpg" width="40" height="40"/>' +
-                    '  </a>' +
-                    '</div>' +
-                    '<div class="col-md-10 col-sm-10 col-xs-9">' +
-                    '  <div class="bubble">' + 
-                    '    <p>' + 
-                           encodeHTML(JSON.stringify(data)) +
-                    '    </p>' + 
-                    '  </div>' + 
-                    '</div>' +
-                    '<div style="clear: both;">' + '</div>';
+        if (isSelf) {
+            msg = msg + '<div class="col-md-2 col-sm-2 col-xs-3">' + 
+                        '  <a href="http://google.com">' +
+                        '    <img class="img-responsive" src="http://bighero6games.me/games/images/189e27f7a893da854ad965e1406cc3878af80307.jpg" width="40" height="40"/>' +
+                        '  </a>' +
+                        '</div>' +
+                        '<div class="col-md-10 col-sm-10 col-xs-9">' +
+                        '  <div class="bubble">' + 
+                        '    <p>' + 
+                               encodeHTML(JSON.stringify(data)) +
+                        '    </p>' + 
+                        '  </div>' + 
+                        '</div>' +
+                        '<div style="clear: both;"></div>';
+        }
+        else {
+            msg = msg + '<div class="col-md-10 col-sm-10 col-xs-9">' + 
+                        '  <div class="bubble bubble--alt">' +
+                        '    <p>' +
+                               encodeHTML(JSON.stringify(data)) +
+                        '    </p>' +
+                        '  </div>' +
+                        '</div>' +
+                        '<div class="col-md-2 col-sm-2 col-xs-3">' +
+                        '  <a href="http://baidu.com">' +
+                        '    <img class="img-responsive" src="http://foto.zugarcube.com/wp-content/uploads/2012/08/530161_10151011050037379_301509921_n.jpg" width="40" height="40"/>' +
+                        '  </a>' +
+                        '</div>' +
+                        '<div style="clear: both;"></div>';
+        }
     }
     var p = document.createElement('p');
     p.innerHTML = msg;
