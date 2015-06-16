@@ -113,6 +113,7 @@ function main() {
                         msgTime = data.timestamp;
                     }
                     showMsg(data);
+                    printWall.scrollTop = printWall.scrollHeight;
                 });
             }
             // 如果服务器端不存在这个 conversation
@@ -268,7 +269,20 @@ function getLog(callback) {
 function showLog(msg, data, isBefore) {
     if (data) {
         // console.log(msg, data);
-        msg = msg + '<span class="strong">' + encodeHTML(JSON.stringify(data)) + '</span>';
+        //msg = msg + '<span class="strong">' + encodeHTML(JSON.stringify(data)) + '</span>';
+        msg = msg + '<div class="col-md-2 col-sm-2 col-xs-3">' + 
+                    '  <a href="http://google.com">' +
+                    '    <img class="img-responsive" src="http://dzt1km7tv28ex.cloudfront.net/u/210832028860416000_35s_d.jpg" width="40" height="40"/>' +
+                    '  </a>' +
+                    '</div>' +
+                    '<div class="col-md-10 col-sm-10 col-xs-9">' +
+                    '  <div class="bubble">' + 
+                    '    <p>' + 
+                           encodeHTML(JSON.stringify(data)) +
+                    '    </p>' + 
+                    '  </div>' + 
+                    '</div>' +
+                    '<div style="clear: both;">' + '</div>';
     }
     var p = document.createElement('p');
     p.innerHTML = msg;
